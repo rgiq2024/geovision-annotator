@@ -1,11 +1,10 @@
-# Publishes the portal UI (frontend/) to GitHub Pages.
-# The hosted page browses Wayback, imports AOIs and drafts annotations on its own;
-# point it at a running backend (Export tab -> Server) to fetch, detect and export.
+# Builds the in-browser detection models (ONNX) and publishes the portal to GitHub Pages.
+# The published portal runs entirely in the visitor's browser: Wayback imagery, AOI clipping,
+# YOLO-OBB detection (WebGPU / WebAssembly), annotation and zip export.
 name: Publish portal to GitHub Pages
 on:
   push:
     branches: [main]
-    paths: ["frontend/**"]
   workflow_dispatch:
 permissions:
   contents: read
@@ -13,13 +12,31 @@ permissions:
   id-token: write
 concurrency: { group: pages, cancel-in-progress: true }
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
-    environment: { name: github-pages, url: "${{ steps.deploy.outputs.page_url }}" }
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - name: Cache exported models
+        id: models
+        uses: actions/cache@v4
+        with:
+          path: frontend/models
+          key: onnx-yolo11-obb-1024-v1-${{ hashFiles('scripts/export_onnx.py') }}
+      - name: Export YOLO OBB models to ONNX
+        if: steps.models.outputs.cache-hit != 'true'
+        run: |
+          pip install --quiet torch torchvision --index-url https://download.pytorch.org/whl/cpu
+          pip install --quiet ultralytics onnx onnxslim
+          python scripts/export_onnx.py
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with: { path: frontend }
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: { name: github-pages, url: "${{ steps.deploy.outputs.page_url }}" }
+    steps:
       - id: deploy
         uses: actions/deploy-pages@v4

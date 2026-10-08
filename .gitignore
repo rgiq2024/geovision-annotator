@@ -5,3 +5,4 @@ models/runs/
 *.pt
 .venv/
 __pycache__/
+frontend/models/*.onnx

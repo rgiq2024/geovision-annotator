@@ -11,15 +11,33 @@ Wayback releases (latest /   ├─► mosaic tiles ─► clip to AOI ─► YO
                                      review in portal (accept / reject / reclass / redraw) ─► training set ─► fine-tune
 ```
 
-## Quick start
+## Run it in the browser (GitHub Pages, nothing to install)
+
+**https://rgiq2024.github.io/geovision-annotator/**
+
+Everything happens on the visitor's computer: Wayback tiles are fetched by the browser, clipped
+to each AOI on a canvas, run through YOLO11-OBB with ONNX Runtime Web (WebGPU on Chrome/Edge,
+WebAssembly elsewhere), and packed into the export zip (GeoTIFF + PNG/world file + GeoJSON + previews).
+
+One-time setup: **Settings → Pages → Source: GitHub Actions**. Every push to `main` then runs
+`.github/workflows/pages.yml`, which exports the ONNX models (`scripts/export_onnx.py`) and publishes `frontend/`.
+
+Speed guide: WebGPU is roughly 0.2–0.5 s per 1024 px chip; WebAssembly about 3 s. An airport at z18 is 30–70 chips.
+Results live in the tab's memory, so export the zip before closing it. Reviewed annotations stay in the browser.
+
+Training without a server: **Train → Download training dataset** (YOLO-OBB chips, labels, `data.yaml`),
+train on any PC, Colab or Kaggle with the commands in its `TRAIN.md`, then **Detect → Load ONNX model**.
+
+Run the static portal locally: `python scripts/export_onnx.py && cd frontend && python -m http.server 8080`.
+
+## Optional Python server (large jobs, GPU training)
 
 ```bash
 ./run.sh            # Linux / macOS   (Windows: run.bat)
-# open http://localhost:8000
+# open http://localhost:8000, or connect the Pages portal to it in Export → Processing
 ```
 
-Python 3.10+. First detection run downloads the YOLO11 OBB weights (~20 MB) automatically.
-A GPU is used if PyTorch sees one; CPU works but is slower (roughly 1–3 s per 1024 px chip).
+Python 3.10+. The first detection run downloads the YOLO11 OBB weights automatically.
 
 ## Workflow in the portal
 
@@ -30,13 +48,13 @@ A GPU is used if PyTorch sees one; CPU works but is slower (roughly 1–3 s per 
 | **Detect** | Model, classes (aircraft, ship, helicopter, storage tank, vehicles, harbor, bridge…), confidence, zoom (z18 ≈ 0.54 m/px in the UAE). Runs every AOI × every release. |
 | **Results** | Per AOI and date: object counts, a bar chart of objects per imagery date, clipped image overlay with detections. |
 | **Annotate** | Click objects: Accept `A`, Reject `R`, Next `N`, Edit shape `E`, change class, delete; draw missed objects (box/polygon); add your own classes. *Save to training set*. |
-| **Train** | Builds a YOLO-OBB dataset from saved annotations (1024 px chips from the same Wayback release) and fine-tunes. The new model appears in Detect. |
+| **Train** | Downloads a YOLO-OBB dataset built from saved annotations (1024 px chips from the same Wayback release). With the server connected, fine-tunes directly. |
 | **Export** | Job zip, reviewed detections GeoJSON, AOIs, CSV table. |
 
 ## Outputs
 
 ```
-outputs/<job_id>/
+<job_id>/                        (browser zip; outputs/<job_id>/ on the server)
   all_detections.geojson         every object, every AOI, every date (EPSG:4326)
   summary.json                   counts per AOI × date
   aois.geojson
@@ -59,13 +77,6 @@ python backend/batch.py my_airports.geojson --mode local --classes aircraft ship
 python backend/batch.py ports.kml.geojson --mode selected --releases 31144 23001
 python backend/batch.py aois.geojson --no-detect          # imagery clips only
 ```
-
-## Hosting the portal on GitHub Pages
-
-`.github/workflows/pages.yml` publishes `frontend/` on every push to `main`.
-The hosted page browses Wayback, imports AOIs and drafts annotations by itself; in
-**Export → Server** point it at your running backend (e.g. `http://localhost:8000`) to fetch,
-detect, train and export.
 
 ## Notes
 

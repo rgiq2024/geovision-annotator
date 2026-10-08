@@ -1,0 +1,26 @@
+[
+ {
+  "file": "yolo11n-obb.onnx",
+  "label": "YOLO11 nano OBB \u00b7 fast",
+  "imgsz": 1024,
+  "names": [
+   "plane",
+   "ship",
+   "storage tank",
+   "baseball diamond",
+   "tennis court",
+   "basketball court",
+   "ground track field",
+   "harbor",
+   "bridge",
+   "large vehicle",
+   "small vehicle",
+   "helicopter",
+   "roundabout",
+   "soccer ball field",
+   "swimming pool"
+  ],
+  "task": "obb",
+  "size_mb": 11.0
+ }
+]
