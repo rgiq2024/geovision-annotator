@@ -1,0 +1,215 @@
+{
+ "type": "FeatureCollection",
+ "features": [
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "DXB",
+    "title": "Dubai International Airport",
+    "type": "airport"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       55.335,
+       25.237
+      ],
+      [
+       55.385,
+       25.237
+      ],
+      [
+       55.385,
+       25.268
+      ],
+      [
+       55.335,
+       25.268
+      ],
+      [
+       55.335,
+       25.237
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "SHJ",
+    "title": "Sharjah International Airport",
+    "type": "airport"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       55.503,
+       25.315
+      ],
+      [
+       55.535,
+       25.315
+      ],
+      [
+       55.535,
+       25.338
+      ],
+      [
+       55.503,
+       25.338
+      ],
+      [
+       55.503,
+       25.315
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "AUH",
+    "title": "Zayed International Airport",
+    "type": "airport"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       54.625,
+       24.418
+      ],
+      [
+       54.672,
+       24.418
+      ],
+      [
+       54.672,
+       24.452
+      ],
+      [
+       54.625,
+       24.452
+      ],
+      [
+       54.625,
+       24.418
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "DWC",
+    "title": "Al Maktoum International Airport",
+    "type": "airport"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       55.14,
+       24.878
+      ],
+      [
+       55.19,
+       24.878
+      ],
+      [
+       55.19,
+       24.912
+      ],
+      [
+       55.14,
+       24.912
+      ],
+      [
+       55.14,
+       24.878
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "JEA_PORT",
+    "title": "Jebel Ali Port",
+    "type": "port"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       55.0,
+       24.99
+      ],
+      [
+       55.06,
+       24.99
+      ],
+      [
+       55.06,
+       25.025
+      ],
+      [
+       55.0,
+       25.025
+      ],
+      [
+       55.0,
+       24.99
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "RASHID_PORT",
+    "title": "Port Rashid",
+    "type": "port"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       55.262,
+       25.262
+      ],
+      [
+       55.285,
+       25.262
+      ],
+      [
+       55.285,
+       25.28
+      ],
+      [
+       55.262,
+       25.28
+      ],
+      [
+       55.262,
+       25.262
+      ]
+     ]
+    ]
+   }
+  }
+ ]
+}
